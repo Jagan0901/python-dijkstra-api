@@ -1,65 +1,125 @@
-# 🐍 Python — Shortest Path Microservice (Work in Progress 🚧)
+# Shortest-Path Microservice (Dijkstra API)
 
-## 📌 Overview
-This project implements a REST API in Python using **Flask** that computes the **shortest path** in a weighted graph using **Dijkstra’s algorithm**.
-
-The API accepts a graph (nodes, edges, weights) as input in JSON format and returns:
-- ✅ The shortest distance from source to target  
-- ✅ The shortest path (list of nodes)
-
-This is part of my portfolio projects for the **Google Software Application Development Apprenticeship**.
+## Overview
+A Python REST API that computes the **shortest path in weighted graphs** using **Dijkstra’s algorithm**.  
+Designed as a clean microservice to demonstrate algorithmic problem solving, API design, and unit testing — perfect for showcasing coding and system design skills.
 
 ---
 
-## 🚀 Planned Features
-- Implement Dijkstra’s algorithm with a min-heap (priority queue)
-- REST API endpoint (`/shortest_path`) using Flask
-- Input validation and error handling
-- Unit tests with **pytest**
-- Example usage with `curl` and Postman
-- Complexity analysis (Big-O notation)
-- Dockerfile for containerization (optional)
+## Features
+- Compute shortest paths between nodes in a weighted graph.
+- REST API endpoint (`/shortest_path`) returns distance and path as JSON.
+- Handles edge cases (disconnected graphs, invalid requests).
+- Unit-tested core algorithm using **pytest**.
+- Example client script to interact with the API.
 
 ---
 
-## 📂 Project Structure (Planned)
-```
-python-dijkstra-api/
-├── app/
-│   ├── dijkstra.py       # Core algorithm
-│   ├── app.py            # Flask app entry point
-├── tests/
-│   └── test_dijkstra.py  # Unit tests
-├── requirements.txt
-└── README.md
-```
-
----
-
-## 🛠️ Tech Stack
+## Tech Stack
 - Python 3.10+
 - Flask (REST API)
-- Pytest (testing)
+- Pytest (unit testing)
+- Requests (client script)
 
 ---
 
-## 📅 Timeline
-- **Day 1:** Implement core Dijkstra algorithm + basic Flask endpoint  
-- **Day 2:** Add unit tests + example requests  
-- **Day 3:** Polish README + finalize demo  
+## Folder Structure
+```
+python-dijkstra-api/
+ ├─ app/
+ │   ├─ __init__.py
+ │   ├─ app.py           # Flask server
+ │   └─ dijkstra.py      # Dijkstra algorithm
+ ├─ tests/
+ │   ├─ test_dijkstra.py # Unit tests
+ │   └─ conftest.py      # Adds project root to sys.path
+ ├─ client.py            # Example client script
+ ├─ requirements.txt
+ ├─ .gitignore
+ └─ README.md
+```
 
 ---
 
-## 🔗 Status
-- ✅ Repo created  
-- 🚧 Implementation in progress  
-- ⏳ Code will be completed within 3 days  
+## Installation
+
+1. Clone the repo:
+```bash
+git clone https://github.com/Jagan0901/python-dijkstra-api.git
+cd python-dijkstra-api
+```
+
+2. Create a virtual environment:
+```bash
+python -m venv venv
+```
+
+3. Activate the virtual environment:
+
+**Windows CMD:**
+```cmd
+venv\Scripts\activate
+```
+
+**Linux / Git Bash / macOS:**
+```bash
+source venv/bin/activate
+```
+
+4. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
 
 ---
 
-## ✨ Future Improvements
-- Add support for multiple source nodes  
-- Extend to other shortest-path algorithms (Bellman-Ford, A*)  
-- Deploy API on a cloud platform for public use  
+## Running the API
+
+Start the Flask server:
+```bash
+python -m app.app
+```
+
+Server will run at: `http://127.0.0.1:5000` (or your local network IP).
 
 ---
+
+## Example Client Usage
+
+```python
+import requests
+
+PAYLOAD = {
+    "graph": {"A": {"B": 2}, "B": {"D": 5}, "D": {}},
+    "source": "A",
+    "target": "D"
+}
+
+resp = requests.post('http://127.0.0.1:5000/shortest_path', json=PAYLOAD)
+print(resp.json())
+```
+
+Expected output:
+```json
+{"distance": 7.0, "path": ["A", "B", "D"]}
+```
+
+---
+
+## Running Unit Tests
+
+```bash
+pytest -q
+```
+
+All tests should pass, verifying correctness of the Dijkstra implementation.
+
+---
+
+## Notes
+
+- Handles disconnected graphs: returns `{"distance": null, "path": []}` if target is unreachable.
+- Designed for easy extension to other shortest path algorithms (e.g., Bellman-Ford, A*).
+
+---
+
